@@ -4,11 +4,10 @@ import { ChatService } from './chat.service';
 import { ChatMessage } from './chat.model';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+    selector: 'app-root',
+    imports: [FormsModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
   messages = signal<ChatMessage[]>([]);
