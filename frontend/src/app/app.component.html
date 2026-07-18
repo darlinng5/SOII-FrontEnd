@@ -1,0 +1,32 @@
+<div class="chat">
+  <header class="chat__header">
+    <h1>Chat</h1>
+  </header>
+
+  <div class="chat__messages">
+    @for (message of messages(); track $index) {
+      <div class="message" [class.message--user]="message.role === 'user'">
+        <span class="message__bubble">{{ message.content || '…' }}</span>
+      </div>
+    }
+  </div>
+
+  @if (error()) {
+    <p class="chat__error">{{ error() }}</p>
+  }
+
+  <form class="chat__form" (ngSubmit)="send()">
+    <input
+      class="chat__input"
+      type="text"
+      name="draft"
+      placeholder="Escribe un mensaje..."
+      [(ngModel)]="draft"
+      [disabled]="sending()"
+      autocomplete="off"
+    />
+    <button class="chat__send" type="submit" [disabled]="sending() || !draft.trim()">
+      Enviar
+    </button>
+  </form>
+</div>
