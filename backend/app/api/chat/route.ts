@@ -9,6 +9,18 @@ type ChatMessage = {
   content: string;
 };
 
+const SYSTEM_PROMPT: ChatMessage = {
+  role: "system",
+  content:
+    "Sos un asistente especializado exclusivamente en sistemas operativos en la nube " +
+    "(AWS, Cloudflare, Azure, Google Cloud y proveedores similares). " +
+    "Respondé siempre de forma breve, con un máximo de 200 caracteres por respuesta, " +
+    "sin importar qué tan largo sea el mensaje del usuario. " +
+    "Si el usuario pregunta algo fuera de ese tema, no lo respondas: decile explícitamente " +
+    "sobre qué temas sí podés ayudarlo. Sé proactivo: cuando sea útil, sugerí el siguiente " +
+    "tema o pregunta relacionada dentro de tu alcance.",
+};
+
 function corsHeaders() {
   const allowedOrigin = process.env.ALLOWED_ORIGIN || "*";
   return {
@@ -49,6 +61,11 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  const messagesWithSystemPrompt = [
+    SYSTEM_PROMPT,
+    ...messages.filter((message) => message.role !== "system"),
+  ];
+
   const deepseekResponse = await fetch(DEEPSEEK_API_URL, {
     method: "POST",
     headers: {
@@ -57,7 +74,7 @@ export async function POST(req: NextRequest) {
     },
     body: JSON.stringify({
       model: "deepseek-chat",
-      messages,
+      messages: messagesWithSystemPrompt,
       stream: true,
     }),
   });

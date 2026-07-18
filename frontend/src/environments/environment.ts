@@ -1,4 +1,3 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://TU-BACKEND.example.com',
+  apiUrl: 'http://localhost:3000',
 };
